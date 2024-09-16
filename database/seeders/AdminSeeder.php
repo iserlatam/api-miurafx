@@ -52,7 +52,7 @@ class AdminSeeder extends Seeder
 
         // Master
         $master1User = User::create([
-            'email' => 'master@email.com',
+            'email' => 'master1@email.com',
             'password' => Hash::make('password'),
             'nombre_completo' => 'Habid Sarif',
             'dirección' => '123 Main St',
