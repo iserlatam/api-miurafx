@@ -108,6 +108,7 @@ class AuthController extends Controller
             'Type' => 'Bearer',
             'role' => $user->roles->pluck('name'), // include user role in response
             'id' => $user->id,
+            'email' => $user->email,
             'cliente_id' => $user->cliente?->id ?? 'usuario no asociado a un cliente',
             'hasCliente' => $user->cliente?->id ? true : false,
         ]);
