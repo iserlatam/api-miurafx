@@ -16,7 +16,7 @@ class AdminSeeder extends Seeder
     {
         // Master
         $datacenterUser = User::create([
-            'email' => 'datacenter@email.com',
+            'email' => 'datacenter@miurafx.com',
             'password' => Hash::make('password'),
             'nombre_completo' => 'Habid Sarif',
             'dirección' => '123 Main St',
@@ -34,7 +34,7 @@ class AdminSeeder extends Seeder
 
         // Master
         $selfUser = User::create([
-            'email' => 'self@email.com',
+            'email' => 'self@miurafx.com',
             'password' => Hash::make('password'),
             'nombre_completo' => 'Habid Sarif',
             'dirección' => '123 Main St',
@@ -52,7 +52,7 @@ class AdminSeeder extends Seeder
 
         // Master
         $master1User = User::create([
-            'email' => 'master1@email.com',
+            'email' => 'master1@miurafx.com',
             'password' => Hash::make('password'),
             'nombre_completo' => 'Habid Sarif',
             'dirección' => '123 Main St',
