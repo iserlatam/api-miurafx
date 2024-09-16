@@ -24,7 +24,7 @@ class MovimientoResource extends JsonResource
             'razon_rechazo' => $this->razon_rechazo,
             'documento' => $this->documento,
             'cliente_id' => $this->cliente_id,
-            'cliente' => ClienteResource::make($this->whenLoaded('cliente')),
+            // 'cliente' => $this->cliente,
         ];
     }
 }

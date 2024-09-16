@@ -22,8 +22,8 @@ class SeguimientoStoreRequest extends FormRequest
         return [
             'ultimo_contacto' => ['required', 'date'],
             'observaciones' => ['required', 'string'],
-            'cliente_id' => ['required', 'integer', 'exists:Clientes,id'],
-            'user_id' => ['required', 'integer', 'exists:,id'],
+            'cliente_id' => ['required', 'integer', 'exists:clientes,id'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 }

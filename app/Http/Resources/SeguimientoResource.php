@@ -14,11 +14,17 @@ class SeguimientoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'fecha_creacion' => $this->created_at,
             'ultimo_contacto' => $this->ultimo_contacto,
             'observaciones' => $this->observaciones,
-            'cliente_id' => $this->cliente_id,
-            'user_id' => $this->user_id,
-            'user' => UserResource::make($this->whenLoaded('user')),
+            'usuario' => [
+                "id" => $this->user->id,
+                "nombre" => $this->user->nombre_completo,
+            ],
+            'cliente' => [
+                "id" => $this->cliente->id,
+                "nombre" => $this->cliente->user->nombre_completo,
+            ],
         ];
     }
 }

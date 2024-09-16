@@ -20,6 +20,7 @@ class Cliente extends Model
         'estado',
         'fase',
         'origen',
+        'saldo',
         'user_id',
     ];
 
@@ -31,6 +32,7 @@ class Cliente extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
+        'saldo' => 'integer',
     ];
 
     public function user(): BelongsTo
@@ -46,5 +48,10 @@ class Cliente extends Model
     public function seguimientos(): HasMany
     {
         return $this->hasMany(Seguimiento::class);
+    }
+
+    public function asignaciones(): HasMany
+    {
+        return $this->hasMany(Asignacion::class);
     }
 }

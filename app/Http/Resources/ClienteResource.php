@@ -18,8 +18,21 @@ class ClienteResource extends JsonResource
             'fase' => $this->fase,
             'origen' => $this->origen,
             'user_id' => $this->user_id,
-            'user' => UserResource::make($this->whenLoaded('user')),
-            'seguimientos' => SeguimientoCollection::make($this->whenLoaded('seguimientos')),
+            'saldo' => $this->saldo,
+            // 'user' => UserResource::make($this->whenLoaded('user')),
+            "nombre_completo" => $this->user->nombre_completo,
+            'usuario' => [
+                'id' => $this->user_id,
+                "nombre_completo" => $this->user->nombre_completo,
+                "email" => $this->user->email,
+                "celular" => $this->user->celular,
+                "pais" => $this->user->pais,
+                "estado" => $this->user->estado,
+                "etiqueta" => $this->user->etiqueta,
+            ],
+            // 'seguimientos' => SeguimientoCollection::make($this->whenLoaded('seguimientos')),
+            // 'seguimientos' => $this->seguimientos,
+            // "movimientos" => $this->movimientos,
         ];
     }
 }

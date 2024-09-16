@@ -20,9 +20,18 @@ class User extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        "email",
+        "password",
+        "nombre_completo",
+        "dirección",
+        "celular",
+        "fecha_nacimiento",
+        "etiqueta",
+        "ciudad",
+        "tipo_documento",
+        "documento",
+        "método_pago",
+        "pais"
     ];
 
     /**

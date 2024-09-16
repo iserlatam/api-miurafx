@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
         $messages = [
-            'name.required' => 'El campo nombre es obligatorio.',
             'email.required' => 'El campo email es obligatorio.',
             'email.email' => 'El campo email debe ser una dirección de correo válida.',
             'email.unique' => 'El correo electrónico ya está registrado.',
@@ -34,19 +34,10 @@ class AuthController extends Controller
 
         // Validación de los datos de entrada
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'nombre_completo' => 'required|string',
-            'dirección' => 'required|string|max:255',
             'celular' => 'required|string|max:15',
-            'fecha_nacimiento' => 'required|date',
-            'estado' => 'required|integer',
-            'etiqueta' => 'nullable|string|max:50',
-            'ciudad' => 'required|string|max:100',
-            'tipo_documento' => 'required|string|max:10',
-            'documento' => 'required|string|max:20|unique:users,documento',
-            'método_pago' => 'nullable|string|max:50',
             'pais' => 'required|string|max:100',
         ], $messages);
 
@@ -57,9 +48,10 @@ class AuthController extends Controller
             ], 422);
         }
 
+        // return response()->json($request);
+
         // Creación del usuario
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'nombre_completo' => $request->nombre_completo,
@@ -89,11 +81,18 @@ class AuthController extends Controller
     {
 
         $fields = $request->validate([
-            'name' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where('name', $fields['name'])->first();
+        $user = User::where('email', $fields['email'])->first();
+
+        if ( !$user ) {
+            return response([
+                "message" => "Este correo no está registrado en el sistema",
+                "status" => 404
+            ], 404);
+        }
 
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
@@ -102,12 +101,15 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('my-token')->plainTextToken;
+        $token = $user->createToken('app-client-token')->plainTextToken;
 
         return response()->json([
             'token' => $token,
             'Type' => 'Bearer',
-            'role' => 'master' // include user role in response
+            'role' => $user->roles->pluck('name'), // include user role in response
+            'id' => $user->id,
+            'cliente_id' => $user->cliente?->id ?? 'usuario no asociado a un cliente',
+            'hasCliente' => $user->cliente?->id ? true : false,
         ]);
     }
 }

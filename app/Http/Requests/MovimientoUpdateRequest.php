@@ -29,7 +29,7 @@ class MovimientoUpdateRequest extends FormRequest
             'cantidad' => ['required', 'string'],
             'razon_rechazo' => ['required', 'string'],
             'documento' => ['required', 'string'],
-            'cliente_id' => ['required', 'integer', 'exists:Clientes,id'],
+            'cliente_id' => ['required', 'integer', 'exists:clientes,id'],
         ];
     }
 }

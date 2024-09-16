@@ -7,8 +7,11 @@ use App\Http\Requests\SeguimientoUpdateRequest;
 use App\Http\Resources\SeguimientoCollection;
 use App\Http\Resources\SeguimientoResource;
 use App\Models\Seguimiento;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
 
 class SeguimientoController extends Controller
 {
@@ -19,11 +22,25 @@ class SeguimientoController extends Controller
         return new SeguimientoCollection($seguimientos);
     }
 
-    public function store(SeguimientoStoreRequest $request): SeguimientoResource
+    public function store(SeguimientoStoreRequest $request): SeguimientoResource | JsonResponse
     {
-        $seguimiento = Seguimiento::create($request->validated());
 
-        return new SeguimientoResource($seguimiento);
+        $currentUser = $request->user();
+
+        if ( !$currentUser->hasAnyRole(["accesor","monitor","master"]) ) {
+            return response()->json([
+                "message" => "permiso denegado"
+            ], 403);
+        } else {
+            $seguimiento = Seguimiento::create($request->validated());
+            return response()->json([
+                "message" => "Seguimiento creado correctamente",
+                "result" => $seguimiento,
+            ]);
+            // return new SeguimientoResource($seguimiento);
+        }
+
+
     }
 
     public function show(Request $request, Seguimiento $seguimiento): SeguimientoResource

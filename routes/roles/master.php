@@ -1,0 +1,42 @@
+<?php
+
+use App\Http\Controllers\Api\AsignacionesController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\SeguimientoController;
+use Illuminate\Support\Facades\Route;
+
+// Master
+Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
+    // Users, Clientes, Movimientos -> update, delete
+    Route::apiResource('users', UserController::class)->only([
+        'update',
+        'destroy'
+    ]);
+
+    Route::apiResource('clientes', ClienteController::class)->only([
+        'update',
+        'destroy'
+    ]);
+
+    Route::put('clientes/{id}/saldo/actualizar', [ClienteController::class, 'changeSaldo']);
+
+    Route::apiResource('movimientos', MovimientoController::class)->only([
+        'update',
+        'destroy'
+    ]);
+
+    Route::put('movimientos/estado/{id}', [MovimientoController::class, 'updateStatus']);
+
+    Route::apiResource('seguimientos', SeguimientoController::class)->only([
+        'update',
+        'destroy'
+    ]);
+
+    // Asignar rol
+    Route::put('users/roles/asignar/{id}', [AsignacionesController::class, 'assignRole']);
+
+    // Asignar cliente y perfil
+    Route::put('clientes/asignar/{id}', [AsignacionesController::class, 'assignProfile']);
+});

@@ -23,7 +23,7 @@ class ClienteStoreRequest extends FormRequest
             'estado' => ['required', 'string'],
             'fase' => ['required', 'string'],
             'origen' => ['required', 'string'],
-            'user_id' => ['required', 'integer', 'exists:Users,id'],
+            'user_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 }

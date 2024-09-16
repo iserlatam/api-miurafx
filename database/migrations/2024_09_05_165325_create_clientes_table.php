@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('estado');
             $table->string('fase');
             $table->string('origen');
+            $table->integer('saldo')->default(0);
             $table->foreignId('user_id');
             $table->timestamps();
         });

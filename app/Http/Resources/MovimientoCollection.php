@@ -13,7 +13,7 @@ class MovimientoCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'clientes' => $this->collection,
+            'movimientos' => $this->collection,
         ];
     }
 }
