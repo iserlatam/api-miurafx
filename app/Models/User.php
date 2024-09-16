@@ -30,6 +30,8 @@ class User extends Model
         "ciudad",
         "tipo_documento",
         "documento",
+        "campanna",
+        "afiliador",
         "método_pago",
         "pais"
     ];

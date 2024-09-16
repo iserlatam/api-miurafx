@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('celular')->nullable();
             $table->date('fecha_nacimiento')->nullable();
             $table->string('etiqueta')->nullable();
+            $table->string('afiliador')->nullable();
+            $table->string('campanna')->nullable();
             $table->string('ciudad')->nullable();
             $table->string('tipo_documento')->nullable();
             $table->string('documento')->nullable();

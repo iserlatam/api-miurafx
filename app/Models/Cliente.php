@@ -32,7 +32,7 @@ class Cliente extends Model
     protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'saldo' => 'integer',
+        'saldo' => 'double',
     ];
 
     public function user(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -70,10 +71,19 @@ class AuthController extends Controller
         // Asignar rol al usuario
         $user->assignRole('cliente');
 
+        // Asignar el usuario a un cliente de forma automática
+        $cliente = Cliente::create([
+            'estado' => 'nuevo',
+            'fase' => 'prospecto nuevo',
+            'origen' => 'frspot',
+            'saldo' => 0.00,
+            'user_id' => $user->id,
+        ]);
+
         // Retornar respuesta JSON con los datos del usuario creado
         return response()->json([
             'message' => 'Usuario creado exitosamente',
-            'user' => $user
+            'cliente_id' => $cliente->id,
         ], 201);
     }
 
@@ -87,7 +97,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $fields['email'])->first();
 
-        if ( !$user ) {
+        if (!$user) {
             return response([
                 "message" => "Este correo no está registrado en el sistema",
                 "status" => 404

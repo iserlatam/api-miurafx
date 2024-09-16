@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Cliente;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -20,19 +21,23 @@ class UsersImport implements ToModel, WithHeadingRow
             'email' => $row['email'],
             'password' => 'Aa123456', // Asegúrate de hashear la contraseña
             'nombre_completo' => $row['nombre_completo'],
-            'dirección' => $row['direccion'],
             'celular' => $row['celular'],
-            'fecha_nacimiento' => $row['fecha_nacimiento'],
-            'etiqueta' => $row['etiqueta'],
-            'ciudad' => $row['ciudad'],
-            'tipo_documento' => $row['tipo_documento'],
-            'documento' => $row['documento'],
-            'método_pago' => $row['metodo_pago'],
+            'campanna' => $row['campanna'],
+            'afiliador' => $row['afiliador'],
             'pais' => $row['pais'],
         ]);
 
         // Asignar el rol después de que el usuario haya sido creado
         $user->assignRole('cliente');
+
+        // Asignar el usuario a un cliente de forma automática
+        $cliente = Cliente::create([
+            'estado' => 'nuevo',
+            'fase' => 'prospecto nuevo',
+            'origen' => 'frspot',
+            'saldo' => 0.00,
+            'user_id' => $user->id,
+        ]);
 
         return $user;
     }
