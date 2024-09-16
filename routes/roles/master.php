@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AsignacionesController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\Helpers\UserExcelController;
 use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\SeguimientoController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,9 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
         'update',
         'destroy'
     ]);
+
+    // Upload users
+    Route::post('/users/import', [UserExcelController::class, 'import'])->name('import');
 
     Route::apiResource('clientes', ClienteController::class)->only([
         'update',

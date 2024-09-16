@@ -29,7 +29,7 @@ class UserResource extends JsonResource
             'método_pago' => $this->método_pago,
             'pais' => $this->pais,
             'cliente_id' => $this->cliente ? $this->cliente->id : 'no existe un cliente asociado a este usuario',
-            'saldo' => $this->cliente->saldo ?? 0,
+            'saldo' => $this->cliente->saldo ?? "No tiene habilitada esta opción",
             // 'fase' => $this->cliente ? $this->cliente->fase : 'no existe un cliente asociado a este usuario',
             // 'origen' => $this->cliente ? $this->cliente->origen : 'no existe un cliente asociado a este usuario',
             'created_at' => $this->created_at,
