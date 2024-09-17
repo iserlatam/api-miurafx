@@ -18,7 +18,7 @@ class MovimientoResource extends JsonResource
             'tipo_solicitud' => $this->tipo_solicitud,
             'estado_solicitud' => $this->estado_solicitud,
             'metodo_pago' => $this->metodo_pago,
-            'fecha_solicitud' => $this->fecha_solicitud,
+            'fecha_solicitud' =>  date_format($this->created_at, 'Y-m-d'),
             'divisa' => $this->divisa,
             'cantidad' => $this->cantidad,
             'razon_rechazo' => $this->razon_rechazo,

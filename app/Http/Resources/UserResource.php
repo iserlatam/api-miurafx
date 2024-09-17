@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\Helpers\HandleKeysHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -32,8 +33,9 @@ class UserResource extends JsonResource
             'saldo' => $this->cliente->saldo ?? "No tiene habilitada esta opción",
             'campanna' => $this->campanna,
             'afiliador' => $this->afiliador,
-            // 'fase' => $this->cliente ? $this->cliente->fase : 'no existe un cliente asociado a este usuario',
-            // 'origen' => $this->cliente ? $this->cliente->origen : 'no existe un cliente asociado a este usuario',
+            'deposito_url' => $this->cliente
+                        ? HandleKeysHelper::getClientKeyUrl($this->cliente->id)
+                        : 'no existe un cliente asociado a este usuario',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

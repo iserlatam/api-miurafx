@@ -39,11 +39,24 @@ class MovimientoController extends Controller
     public function store(Request $request)
     {
 
-        // if ($request->hasFile('documento')) {
-        //     return 'tiene documento';
-        // } else {
-        //     return 'no tiene doc';
-        // }
+        $movimiento = Movimiento::create($request->all());
+
+        return new MovimientoResource($movimiento);
+    }
+
+    public function storeWithKey(Request $request, $key)
+    {
+
+        // Decodificar la key en base64
+        $decodedKey = base64_decode($key);
+
+        // Verificar si la key contiene la palabra "par4ngaricut1rimicu4ro"
+        if (strpos($decodedKey, 'par4ngaricut1rimicu4ro') === false) {
+            return response()->json(['error' => 'Key inválida'], 400); // Si no contiene, error
+        }
+
+        // Extraer el userId de la key decodificada
+        [$userId, $secretPhrase] = explode(',', $decodedKey);
 
         $movimiento = Movimiento::create($request->all());
 

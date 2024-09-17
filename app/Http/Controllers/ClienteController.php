@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Helpers\HandleKeysHelper;
 use App\Http\Requests\ClienteStoreRequest;
 use App\Http\Requests\ClienteUpdateRequest;
 use App\Http\Resources\ClienteCollection;
@@ -14,6 +15,19 @@ use Illuminate\Http\Response;
 
 class ClienteController extends Controller
 {
+
+    // Función para generar la key codificada en base64 y redirigir
+    public function generarKey($userId)
+    {
+        $keys = HandleKeysHelper::generarKey($userId);
+
+        // Redirigir a la ruta cliente.deposito con la key codificada
+        return response()->json([
+            "key" => $keys[0],
+            "clear_key" => $keys[1],
+            "login_url" => HandleKeysHelper::getClientKeyUrl($userId),
+        ]);
+    }
 
     public function changeSaldo(Request $request, $id)
     {

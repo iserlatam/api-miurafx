@@ -29,3 +29,8 @@ require __DIR__ . "/roles/master.php";
 require __DIR__ . "/roles/masterMonitor.php";
 // Master, Monitor, Accesor
 require __DIR__ . "/roles/masterMonitorAccesor.php";
+
+// Guest users
+Route::get('/clientes/generar-key/{userId}', [ClienteController::class, 'generarKey'])->name('cliente.generarKey');
+
+Route::post('movimientos/key/{key}', [MovimientoController::class, 'storeWithKey']);
