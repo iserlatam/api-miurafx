@@ -1,48 +1,53 @@
-# Documentación de API - miurafx.com
+# API Documentation - miurafx.com
 
-## Descripción General
-Esta documentación cubre las rutas `GET` y `POST` de la API en `https://miurafx.com/server/api/` y una ruta pública para el registro de usuarios. Cada ruta especifica su método HTTP, los permisos necesarios (autenticación y roles), así como los parámetros requeridos y opcionales.
+## General Description
 
-### URL Base
-La URL base para todas las rutas autenticadas es:
+This documentation covers the `GET` and `POST` routes of the API at `https://miurafx.com/server/api/`, as well as a public route for user registration. Each route specifies its HTTP method, required permissions (authentication and roles), as well as the required and optional parameters.
+
+### Base URL
+
+The base URL for all authenticated routes is:
 
 ```
 https://miurafx.com/server/api/
 ```
 
-Para las rutas públicas, la URL base es:
+For public routes, the base URL is:
 
 ```
-https://miurafx.com/api/
+https://miurafx.com/
 ```
 
 ---
 
-## Rutas Autenticadas
+## Authenticated Routes
 
-### 1. `/users` - Gestión de Usuarios
-- **Métodos:** `GET`, `POST`
-- **Middleware:** `auth-token`
-- **Roles:** `master`, `monitor`
+### 1. `/users` - User Management
+
+-   **Methods:** `GET`, `POST`
+-   **Middleware:** `jwt (jsonwebtoken gained after logging up)`
+-   **Roles:** `master`, `monitor`, 'accesor', 'cliente'
 
 #### GET `/users`
-- **Descripción:** Obtiene una lista de todos los usuarios.
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  
-- **Respuesta Ejemplo:**
+
+-   **Description:** Retrieves a list of all users.
+-   **Headers:**
+
+    -   `Authorization: Bearer <token>`
+
+-   **Sample Response:**
+
 ```json
 {
-    "status": "success",
-    "data": [
+    "usuarios": [
         {
             "id": 1,
             "email": "barnie@email.com",
-            "nombre_completo": "Barnie el Dinosaurio",
-            "celular": "1234567890",
-            "fecha_nacimiento": "1980-01-01",
-            "ciudad": "Colombia",
-            "pais": "Colombia"
+            "nombre_completo": "Barnie the Dinosaur",
+            "cell_phone": "1234567890",
+            "birth_date": "1980-01-01",
+            "city": "Colombia",
+            "country": "Colombia"
         },
         ...
     ]
@@ -50,123 +55,151 @@ https://miurafx.com/api/
 ```
 
 #### POST `/users`
-- **Descripción:** Crea un nuevo usuario.
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  
-- **Body:**
+
+-   **Description:** Creates a new user.
+-   **Headers:**
+
+    -   `Authorization: Bearer <token>`
+
+-   **Body:**
+
 ```json
 {
     "email": "",
     "password": "",
     "nombre_completo": "",
-    "dirección": "",
+    "direccion": "",
     "celular": "",
     "fecha_nacimiento": "",
-    "etiqueta": null,
+    "etiqueta": "",
     "ciudad": "",
+    "campanna": "",
+    "afiliador": "",
     "tipo_documento": "",
     "documento": "",
-    "método_pago": "",
+    "metodo_pago": "",
     "pais": ""
 }
 ```
 
-- **Respuesta Ejemplo:**
+-   **Sample Response:**
+
 ```json
 {
     "status": "success",
-    "message": "Usuario creado exitosamente",
+    "message": "User created successfully",
     "data": {
-        "id": 1,
-        "email": "",
-        "nombre_completo": "",
-        "celular": "",
-        "fecha_nacimiento": "",
-        "ciudad": "",
-        "pais": ""
+        "id": 8,
+        "email": "sample@email.com",
+        "role": ["cliente"],
+        "nombre_completo": "juan1 mesa1",
+        "dirección": "st. 25 Av 101",
+        "celular": "30000001",
+        "fecha_nacimiento": null,
+        "etiqueta": null,
+        "ciudad": null,
+        "tipo_documento": null,
+        "documento": null,
+        "método_pago": null,
+        "pais": " colombia",
+        "cliente_id": 1,
+        "saldo": 0,
+        "campanna": null,
+        "afiliador": null,
+        "created_at": "2024-09-16T23:48:36.000000Z",
+        "updated_at": "2024-09-16T23:48:36.000000Z"
     }
 }
 ```
 
 ---
 
-### 2. `/users/import` - Importación de Usuarios
-- **Método:** `POST`
-- **Middleware:** `auth-token`
-- **Roles:** `master`
-  
+### 2. `/users/import` - User Import
+
+-   **Methods:** `POST`
+-   **Middleware:** `jwt (jsonwebtoken gained after logging up)`
+-   **Roles:** `master`
+
 #### POST `/users/import`
-- **Descripción:** Permite subir un archivo `.csv` o `.xlsx` para importar usuarios en masa.
-- **Headers:**
-  - `Authorization: Bearer <token>`
-  - `Content-Type: multipart/form-data`
 
-- **Parámetros:**
-  - Archivo en formato `.csv` o `.xlsx`.
+-   **Description:** Allows uploading a `.csv` or `.xlsx` file to import users in bulk.
+-   **Headers:**
 
-- **URL para la importación:**  
-  `https://miurafx.com/panel-de-control/usuarios/import`
-  
-- **Requisito previo:**  
-  Iniciar sesión en `https://miurafx.com/iniciar-sesión` con un usuario que tenga el rol `master`.
+    -   `Authorization: Bearer <token>`
+    -   `Content-Type: multipart/form-data`
 
-- **Respuesta Ejemplo:**
+-   **Parameters:**
+
+    -   A `.csv` or `.xlsx` file.
+
+-   **URL for import:**  
+    `https://miurafx.com/panel-de-control/usuarios/import`
+
+-   **Prerequisite:**  
+    Log in first at `https://miurafx.com/iniciar-sesión` with a `master` role user.
+
+-   **Sample Response:**
+
 ```json
 {
     "status": "success",
-    "message": "Usuarios importados exitosamente"
+    "message": "Users imported successfully"
 }
 ```
 
 ---
 
-## Rutas Públicas
+## Public Routes
 
-### 3. `/auth/register` - Registro de Usuarios
-- **Método:** `POST`
-- **URL:** `https://miurafx.com/api/auth/register`
-- **Descripción:** Permite registrar un nuevo usuario de forma pública, sin autenticación.
+### 3. `/auth/register` - User Registration
+
+-   **Method:** `POST`
+-   **URL:** `https://miurafx.com/api/auth/register`
+-   **Description:** Allows public registration of a new user, without authentication.
 
 #### POST `/auth/register`
-- **Body:**
+
+-   **Body:**
+
 ```json
 {
     "email": "",
     "password": "",
     "nombre_completo": "",
-    "dirección": "",
+    "direccion": "",
     "celular": "",
     "fecha_nacimiento": "",
     "etiqueta": null,
     "ciudad": "",
     "tipo_documento": "",
     "documento": "",
-    "método_pago": "",
+    "metodo_pago": "",
     "pais": ""
 }
 ```
 
-- **Respuesta Ejemplo:**
+-   **Sample Response:**
+
 ```json
 {
     "status": "success",
-    "message": "Usuario registrado exitosamente",
+    "message": "User registered successfully",
     "data": {
         "id": 1,
         "email": "",
         "nombre_completo": "",
-        "celular": "",
-        "fecha_nacimiento": "",
-        "ciudad": "",
-        "pais": ""
+        "cell_phone": "",
+        "birth_date": "",
+        "city": "",
+        "country": ""
     }
 }
 ```
 
 ---
 
-### Notas:
-- Todos los campos de los cuerpos de las solicitudes POST deben ser completados adecuadamente según las reglas de validación establecidas en el backend.
-- En las rutas autenticadas, el token debe ser incluido en los headers como `Bearer Token`.
-- Asegúrate de manejar correctamente los errores de validación y autenticación para cada ruta.
+### Notes:
+
+-   All fields in the `POST` request bodies must be filled appropriately according to the validation rules defined in the backend.
+-   For authenticated routes, the token must be included in the headers as a `Bearer Token`.
+-   Ensure proper error handling for validation and authentication in each route.
