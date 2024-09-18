@@ -22,7 +22,7 @@ class AsignacionesController extends Controller
 
     public function store(AsignacionRequest $request): AsignacionResource
     {
-        $movimiento = Asignacion::create($request->validated());
+        $movimiento = Asignacion::create($request->all());
 
         return new AsignacionResource($movimiento);
     }
