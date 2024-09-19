@@ -6,7 +6,7 @@
 
 `https://miurafx.com/server/api`
 We provide you with the base URL where all requests should be made. All requests to this URL require the following header:
-```json
+```js
 {
     'Content-Type': 'application/json, charset=UTF-8',
     Authorization: `Bearer ${token}`,
