@@ -47,4 +47,4 @@ To obtain the token, you need to log in through `https://miurafx.com/server/auth
 - **200 OK**: Successful login. An authentication token is returned.
 - **401 Unauthorized**: The provided credentials are incorrect.
 
-## Visit the Users API reference [here](/docs/api/UsersDocs.md)
+## Visit the Users API reference [here](/docs/api/How_to_handle_users.md)
