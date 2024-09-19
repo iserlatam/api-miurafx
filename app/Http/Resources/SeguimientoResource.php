@@ -14,10 +14,10 @@ class SeguimientoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'fecha_creacion' => $this->created_at,
+            'fecha_creacion' => date_format($this->created_at, 'F, d. Y'),
             'ultimo_contacto' => $this->ultimo_contacto,
             'observaciones' => $this->observaciones,
-            'usuario' => [
+            'asesor' => [
                 "id" => $this->user->id,
                 "nombre" => $this->user->nombre_completo,
             ],

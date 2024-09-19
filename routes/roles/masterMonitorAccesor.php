@@ -35,6 +35,8 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor'])->group(functi
         'store'
     ]);
 
+    Route::get('seguimientos/buscar/cliente/id/{id}', [SeguimientoController::class, 'filterByClienteId']);
+
     Route::apiResource('asignaciones', AsignacionesController::class)->only([
         'index',
         'store'

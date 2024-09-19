@@ -22,12 +22,27 @@ class SeguimientoController extends Controller
         return new SeguimientoCollection($seguimientos);
     }
 
+    public function filterByClienteId($id)
+    {
+        $seguimientos = Seguimiento::where('cliente_id', $id)
+            ->get();
+
+        if (count($seguimientos) == 0) {
+            return response()->json([
+                "message" => "No se encontraron seguimiento asociados a este ID",
+                "status" => Response::HTTP_NOT_FOUND,
+            ]);
+        }
+
+        return new SeguimientoCollection($seguimientos);
+    }
+
     public function store(SeguimientoStoreRequest $request): SeguimientoResource | JsonResponse
     {
 
         $currentUser = $request->user();
 
-        if ( !$currentUser->hasAnyRole(["accesor","monitor","master"]) ) {
+        if (!$currentUser->hasAnyRole(["accesor", "monitor", "master"])) {
             return response()->json([
                 "message" => "permiso denegado"
             ], 403);
@@ -39,8 +54,6 @@ class SeguimientoController extends Controller
             ]);
             // return new SeguimientoResource($seguimiento);
         }
-
-
     }
 
     public function show(Request $request, Seguimiento $seguimiento): SeguimientoResource

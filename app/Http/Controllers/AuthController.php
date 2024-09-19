@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,7 +108,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Credenciales incorrectas',
-                'status' => 401
+            'status' => Response::HTTP_UNAUTHORIZED,
             ], 401);
         }
 
@@ -119,6 +120,7 @@ class AuthController extends Controller
             'role' => $user->roles->pluck('name'), // include user role in response
             'id' => $user->id,
             'email' => $user->email,
+            'status' => Response::HTTP_OK,
             'cliente_id' => $user->cliente?->id ?? 'usuario no asociado a un cliente',
             'hasCliente' => $user->cliente?->id ? true : false,
         ]);

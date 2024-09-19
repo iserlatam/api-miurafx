@@ -19,6 +19,11 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
     // Upload users
     Route::post('/users/import', [UserExcelController::class, 'import'])->name('import');
 
+    // Special users route
+    Route::get('/providers/users', [UserController::class, 'providersIndex']);
+
+    Route::post('/providers/users/create', [UserController::class, 'providersStore']);
+
     Route::apiResource('clientes', ClienteController::class)->only([
         'update',
         'destroy'
