@@ -34,9 +34,9 @@ class UserResource extends JsonResource
             'campanna' => $this->campanna,
             'afiliador' => $this->afiliador,
             'deposito_url' => $this->cliente
-                        ? HandleKeysHelper::getClientKeyUrl($this->cliente->id)
-                        : 'no existe un cliente asociado a este usuario',
-            'created_at' => $this->created_at,
+                ? HandleKeysHelper::getClientKeyUrl($this->cliente->id)
+                : 'no existe un cliente asociado a este usuario',
+            'created_at' => date_format($this->created_at, 'Y-m-d'),
             'updated_at' => $this->updated_at,
         ];
     }

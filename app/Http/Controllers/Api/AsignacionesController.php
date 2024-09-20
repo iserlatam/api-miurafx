@@ -9,15 +9,23 @@ use App\Http\Resources\AsignacionResource;
 use App\Models\Asignacion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AsignacionesController extends Controller
 {
 
     public function index(Request $request): AsignacionCollection
     {
-        $movimientos = Asignacion::all();
+        $asignaciones = Asignacion::all();
 
-        return new AsignacionCollection($movimientos);
+        return new AsignacionCollection($asignaciones);
+    }
+
+    public function show($id): AsignacionResource
+    {
+        $asignacion = Asignacion::findOrFail($id);
+
+        return new AsignacionResource($asignacion);
     }
 
     public function store(AsignacionRequest $request): AsignacionResource
@@ -47,8 +55,18 @@ class AsignacionesController extends Controller
     /**
      * Assign a profile to a client
      */
-    public function assignProfile(Request $request, string $id)
+    public function updateAccesor(Request $request, string $id)
     {
-        //
+        $asignacion = Asignacion::findOrFail($id);
+
+        $asignacion->update([
+            "user_id" => $request->accesor_id
+        ]);
+
+        // Retornar una respuesta de éxito
+        return response()->json([
+            'message' => 'Asesor asignado con éxito nuevamente',
+            'asignacion' => $asignacion,
+        ], Response::HTTP_OK);
     }
 }

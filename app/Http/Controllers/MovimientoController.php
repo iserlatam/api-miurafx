@@ -27,7 +27,7 @@ class MovimientoController extends Controller
         return response()->json([
             'message' => 'Estado actualizado con éxito',
             'movimiento' => $movimiento,
-        ], 200);
+        ], Response::HTTP_OK);
     }
     public function index(Request $request): MovimientoCollection
     {

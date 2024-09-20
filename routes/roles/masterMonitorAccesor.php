@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor'])->group(functi
 
     Route::apiResource('asignaciones', AsignacionesController::class)->only([
         'index',
-        'store'
+        'store',
+        'show'
     ]);
 });

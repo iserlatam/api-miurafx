@@ -34,17 +34,19 @@ class AsignacionResource extends JsonResource
 
         return [
             // CLIENTE ID
+            "asignacion_id" => $this->id,
             "cliente_id" => $this->cliente_id,
             "nombre_completo" => $this->cliente->user->nombre_completo,
             "estado" => $this->cliente->estado,
-            "accessor" => $this->user ? $this->user->nombre_completo : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
-            "accessor_id" => $this->user ? $this->user->id : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
+            "accesor_id" => $this->user ? $this->user->id : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
+            "accesor_nombre" => $this->user ? $this->user->nombre_completo : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
             "asignacion" => $this->asignacion,
             "email" => $this->cliente->user->email,
             "celular" => $this->cliente->user->celular,
             "pais" => $this->cliente->user->pais,
             "fase" => $this->cliente->fase,
             "origen" => $this->cliente->origen,
+            "fecha_creacion" => date_format($this->created_at, 'Y-m-d'),
             "ultimo_contacto" => $this->getUltimoSeguimiento($this->cliente),
             "ultimo_seguimiento" => $this->getUltimoSeguimiento($this->cliente),
         ];

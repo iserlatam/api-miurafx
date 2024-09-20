@@ -48,4 +48,9 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
 
     // Asignar cliente y perfil
     Route::put('clientes/asignar/{id}', [AsignacionesController::class, 'assignProfile']);
+
+    // Obtener unicamente ID Cliente
+    Route::get('clientes/get/user-id/{id}', [ClienteController::class, 'getClienteUserId']);
+
+    Route::put('asignaciones/{id}/updateAccesor', [AsignacionesController::class, 'updateAccesor']);
 });

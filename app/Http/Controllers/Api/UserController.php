@@ -83,6 +83,7 @@ class UserController extends Controller
             'message' => 'User created succesfully',
             'CustomerID' => $user->id,
             'status' => 201,
+            "autologin_url" => "https://miurafx.com/iniciar-sesion"
         ], 201);
     }
 

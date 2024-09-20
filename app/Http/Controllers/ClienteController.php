@@ -84,6 +84,18 @@ class ClienteController extends Controller
         ], 200);
     }
 
+    public function getClienteUserId($id)
+    {
+        // Encontrar el cliente por su ID
+        $cliente = Cliente::findOrFail($id);
+
+        // Retornar una respuesta de éxito
+        return response()->json([
+            'id' => $cliente->user->id
+        ], 200);
+    }
+
+
     public function index(Request $request): ClienteCollection
     {
         $clientes = Cliente::all();
