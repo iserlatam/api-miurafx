@@ -24,6 +24,8 @@ This documentation covers the `GET` and `POST` routes for handle users in Miuraf
             "email": string,
             "phone": string,
             "country": string,
+            "saleStatus": string | "No associated accessor for this user",
+            "ftd_movements": array | "No movements associated yet",
             "autologin_url": string,
         },
         {
@@ -57,9 +59,10 @@ This documentation covers the `GET` and `POST` routes for handle users in Miuraf
 ```json
 {
     {
-    "message": "User created succesfully",
-    "CustomerID": 19,
-    "status": 201
+        "message": "User created succesfully",
+        "CustomerID": 19,
+        "status": 201,
+        "autologin_url": "https://miurafx.com/iniciar-sesion"
     }
 }
 ```
