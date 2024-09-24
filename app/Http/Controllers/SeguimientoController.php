@@ -6,6 +6,7 @@ use App\Http\Requests\SeguimientoStoreRequest;
 use App\Http\Requests\SeguimientoUpdateRequest;
 use App\Http\Resources\SeguimientoCollection;
 use App\Http\Resources\SeguimientoResource;
+use App\Models\Asignacion;
 use App\Models\Seguimiento;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +18,7 @@ class SeguimientoController extends Controller
 {
     public function index(Request $request): SeguimientoCollection
     {
-        $seguimientos = Seguimiento::all();
+        $seguimientos = Seguimiento::orderBy("id", "desc")->get();
 
         return new SeguimientoCollection($seguimientos);
     }
@@ -37,7 +38,7 @@ class SeguimientoController extends Controller
         return new SeguimientoCollection($seguimientos);
     }
 
-    public function store(SeguimientoStoreRequest $request): SeguimientoResource | JsonResponse
+    public function store(Request $request): SeguimientoResource | JsonResponse
     {
 
         $currentUser = $request->user();
@@ -61,21 +62,41 @@ class SeguimientoController extends Controller
         return new SeguimientoResource($seguimiento);
     }
 
-    public function showByClientId(Request $request, $cliente_id): SeguimientoResource
+    public function showByClientId(Request $request, $cliente_id)
     {
         // Buscar el seguimiento por client_id
         $seguimiento = Seguimiento::where('cliente_id', $cliente_id)
-                ->orderByDesc("ultimo_contacto")
-                ->first();
+            ->orderByDesc("id")
+            ->first();
+
+        // Buscar la asignación por cliente_id
+        $asignacion = Asignacion::where('cliente_id', $cliente_id)->first();
+
+        // Verificar si existe la asignación
+        if (!$asignacion) {
+            return response()->json([
+                'message' => 'No disponible. Registre este usuario antes de hacer un seguimiento',
+            ], 404); // Código de estado 404 (No encontrado)
+        }
 
         // Verificar si existe el seguimiento
         if (!$seguimiento) {
             return response()->json([
-                'message' => 'No movements associated with this client.'
+                'message' => 'No hay seguimientos asociados a este usuario. Se muestran la información personal asociada en cambio.',
+                "results" => [
+                    'asesor' => [
+                        "id" => $asignacion->user->id,
+                        "nombre" => $asignacion->user->nombre_completo,
+                    ],
+                    'cliente' => [
+                        "id" => $asignacion->cliente->id,
+                        "nombre" => $asignacion->cliente->user->nombre_completo,
+                    ],
+                ]
             ], 404); // Código de estado 404 (No encontrado)
         }
 
-        // Si existe, retornar el recurso
+        // Preparar la respuesta con la estructura solicitada
         return new SeguimientoResource($seguimiento);
     }
 

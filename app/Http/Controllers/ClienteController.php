@@ -120,8 +120,6 @@ class ClienteController extends Controller
         return new ClienteResource($cliente);
     }
 
-
-
     public function show(Request $request, Cliente $cliente): ClienteResource
     {
         return new ClienteResource($cliente);
