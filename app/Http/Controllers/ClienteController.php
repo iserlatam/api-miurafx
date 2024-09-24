@@ -129,7 +129,11 @@ class ClienteController extends Controller
 
     public function update(ClienteUpdateRequest $request, Cliente $cliente): ClienteResource
     {
-        $cliente->update($request->validated());
+        $cliente->update([
+            "estado" => $request->estado,
+            "fase" => $request->fase,
+            "origen" => $request->origen
+        ]);
 
         return new ClienteResource($cliente);
     }
