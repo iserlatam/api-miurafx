@@ -40,6 +40,7 @@ class AsignacionResource extends JsonResource
             "estado" => $this->cliente->estado,
             "accesor_id" => $this->user ? $this->user->id : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
             "accesor_nombre" => $this->user ? $this->user->nombre_completo : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
+            "accesor_email" => $this->user ? $this->user->email : 'No asignado', // ESTE USUARIO ASIGNADO SOLO DEBE ACCERSE UNA VEZ SE LE ASIGNE UN ACCESO
             "asignacion" => $this->asignacion,
             "email" => $this->cliente->user->email,
             "celular" => $this->cliente->user->celular,

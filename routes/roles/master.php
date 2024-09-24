@@ -52,5 +52,10 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
     // Obtener unicamente ID Cliente
     Route::get('clientes/get/user-id/{id}', [ClienteController::class, 'getClienteUserId']);
 
+    // Obtener información del ULTIMO SEGUIMIENTO EN BASE A ID CLIENTE
+    Route::get('seguimientos/buscar/ultimo/clienteId/{clienteId}', [SeguimientoController::class, 'showByClientId']);
+
     Route::put('asignaciones/{id}/updateAccesor', [AsignacionesController::class, 'updateAccesor']);
+
+    Route::get('asignaciones/clienteId/{clientId}', [AsignacionesController::class, 'showBasicData']);
 });

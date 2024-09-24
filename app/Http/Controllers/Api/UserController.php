@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Helpers\HandleKeysHelper;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\ProvidersUserCollection;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Models\Asignacion;
 use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +30,7 @@ class UserController extends Controller
 
     public function providersIndex(): JsonResponse
     {
-        return (new ProvidersUserCollection(User::all()))->response();
+        return (new ProvidersUserCollection(User::where('id', '>', 3)->get()))->response();
     }
 
     /**
@@ -54,12 +56,14 @@ class UserController extends Controller
             ], 400); // Error 400: Bad Request
         }
 
-
         $newUser = [
             "nombre_completo" => $fullName,
             "email" => $request->email,
             "celular" => $request->phone,
             "pais" => $request->country,
+            'offerName' => $request->offerName,
+            'offerWebsite' => $request->offerWebsite,
+            'comment' => $request->comment,
             // "password" => Hash::make($request->password),
             "password" => Hash::make("Aa123456"),
         ];
@@ -70,6 +74,7 @@ class UserController extends Controller
         // Asignar rol al usuario
         $user->assignRole('cliente');
 
+        // Asignar nuevo cliente
         $cliente = Cliente::create([
             'estado' => 'nuevo',
             'fase' => 'prospecto nuevo',
@@ -78,12 +83,26 @@ class UserController extends Controller
             'user_id' => $user->id,
         ]);
 
+        $selfAccesor = Asignacion::findOrFail(1);
+
+        // Asignacion de asesor self
+        Asignacion::create([
+            "cliente_id" => $cliente->id,
+            "user_id" => $selfAccesor->id,
+            "asignacion" => "no asignado"
+        ]);
+
         // Response
         return response()->json([
             'message' => 'User created succesfully',
             'CustomerID' => $user->id,
             'status' => 201,
-            "autologin_url" => "https://miurafx.com/iniciar-sesion"
+            "autologin_url" => HandleKeysHelper::getClientKeyUrl($cliente->id),
+            "user_credentials" => [
+                "email" => $user->email,
+                "password" => "Aa123456",
+                "login_url" => "http://localhost:8000/iniciar-sesion"
+            ],
         ], 201);
     }
 

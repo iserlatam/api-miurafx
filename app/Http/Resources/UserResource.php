@@ -33,6 +33,9 @@ class UserResource extends JsonResource
             'saldo' => $this->cliente->saldo ?? "No tiene habilitada esta opción",
             'campanna' => $this->campanna,
             'afiliador' => $this->afiliador,
+            'offerName' => $this->offerName,
+            'offerWebsite' => $this->offerWebsite,
+            'comment' => $this->comment,
             'deposito_url' => $this->cliente
                 ? HandleKeysHelper::getClientKeyUrl($this->cliente->id)
                 : 'no existe un cliente asociado a este usuario',

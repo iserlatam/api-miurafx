@@ -47,7 +47,7 @@ class SeguimientoController extends Controller
                 "message" => "permiso denegado"
             ], 403);
         } else {
-            $seguimiento = Seguimiento::create($request->validated());
+            $seguimiento = Seguimiento::create($request->all());
             return response()->json([
                 "message" => "Seguimiento creado correctamente",
                 "result" => $seguimiento,
@@ -58,6 +58,24 @@ class SeguimientoController extends Controller
 
     public function show(Request $request, Seguimiento $seguimiento): SeguimientoResource
     {
+        return new SeguimientoResource($seguimiento);
+    }
+
+    public function showByClientId(Request $request, $cliente_id): SeguimientoResource
+    {
+        // Buscar el seguimiento por client_id
+        $seguimiento = Seguimiento::where('cliente_id', $cliente_id)
+                ->orderByDesc("ultimo_contacto")
+                ->first();
+
+        // Verificar si existe el seguimiento
+        if (!$seguimiento) {
+            return response()->json([
+                'message' => 'No movements associated with this client.'
+            ], 404); // Código de estado 404 (No encontrado)
+        }
+
+        // Si existe, retornar el recurso
         return new SeguimientoResource($seguimiento);
     }
 

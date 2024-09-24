@@ -31,7 +31,7 @@ class MovimientoController extends Controller
     }
     public function index(Request $request): MovimientoCollection
     {
-        $movimientos = Movimiento::all();
+        $movimientos = Movimiento::orderBy('id', 'desc')->get();
 
         return new MovimientoCollection($movimientos);
     }
@@ -39,7 +39,22 @@ class MovimientoController extends Controller
     public function store(Request $request)
     {
 
-        $movimiento = Movimiento::create($request->all());
+        $movimiento = new Movimiento();
+
+        $movimiento->radicado = $request->radicado;
+        $movimiento->tipo_solicitud = $request->tipo_solicitud;
+        $movimiento->estado_solicitud = $request->estado_solicitud;
+        $movimiento->metodo_pago = $request->metodo_pago;
+        $movimiento->divisa = $request->divisa;
+        $movimiento->cantidad = $request->cantidad;
+        $movimiento->razon_rechazo = $request->razon_rechazo;
+        $movimiento->documento = $request->documento;
+        $movimiento->cliente_id = $request->cliente_id;
+
+        // Establecer la fecha de creación con la fecha actual
+        $movimiento->fecha_solicitud = now();
+
+        $movimiento->save();
 
         return new MovimientoResource($movimiento);
     }
@@ -66,6 +81,13 @@ class MovimientoController extends Controller
     public function show(Request $request, Movimiento $movimiento): MovimientoResource
     {
         return new MovimientoResource($movimiento);
+    }
+
+    public function showUserMovements(Request $request, $clienteId)
+    {
+        $movimiento = Movimiento::where('cliente_id', $clienteId)->orderByDesc('id')->get();
+
+        return new MovimientoCollection($movimiento);
     }
 
     public function update(MovimientoUpdateRequest $request, Movimiento $movimiento): MovimientoResource

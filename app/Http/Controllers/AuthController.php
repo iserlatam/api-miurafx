@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asignacion;
 use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -79,6 +80,15 @@ class AuthController extends Controller
             'origen' => 'frspot',
             'saldo' => 0.00,
             'user_id' => $user->id,
+        ]);
+
+        $selfAccesor = Asignacion::findOrFail(1);
+
+        // Asignacion de asesor self
+        Asignacion::create([
+            "cliente_id" => $cliente->id,
+            "user_id" => $selfAccesor->id,
+            "asignacion" => "no asignado"
         ]);
 
         // Retornar respuesta JSON con los datos del usuario creado

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AsignacionRequest;
 use App\Http\Resources\AsignacionCollection;
 use App\Http\Resources\AsignacionResource;
+use App\Http\Resources\UserAsignacionResource;
 use App\Models\Asignacion;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,15 @@ class AsignacionesController extends Controller
         $asignacion = Asignacion::findOrFail($id);
 
         return new AsignacionResource($asignacion);
+    }
+
+    public function showBasicData($clientId)
+    {
+        $asignacion = Asignacion::where('cliente_id', $clientId)->first();
+
+        // return $asignacion;
+
+        return new UserAsignacionResource($asignacion);
     }
 
     public function store(AsignacionRequest $request): AsignacionResource
@@ -69,4 +79,25 @@ class AsignacionesController extends Controller
             'asignacion' => $asignacion,
         ], Response::HTTP_OK);
     }
+
+    public function destroy($id)
+{
+    // Buscar la asignación por ID
+    $asignacion = Asignacion::find($id);
+
+    // Verificar si existe la asignación
+    if (!$asignacion) {
+        return response()->json([
+            'message' => 'Asignación no encontrada.'
+        ], 404); // Código de estado 404 (No encontrado)
+    }
+
+    // Eliminar la asignación
+    $asignacion->delete();
+
+    // Retornar respuesta exitosa
+    return response()->json([
+        'message' => 'Asignación eliminada con éxito.'
+    ], 204); // Código de estado 200 (OK)
+}
 }

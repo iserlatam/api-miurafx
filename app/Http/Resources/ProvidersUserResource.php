@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\Helpers\HandleKeysHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,9 @@ class ProvidersUserResource extends JsonResource
             "email" => $this->email,
             "phone" => $this->celular,
             "country" => $this->pais,
+            'offerName' => $this->offerName,
+            'offerWebsite' => $this->offerWebsite,
+            'comment' => $this->comment,
             'saleStatus' => $this->cliente ? $this->cliente->estado : 'No associated accessor for this user',
             // 'ftd_movements' => $this->cliente && $this->cliente->movimientos && !$this->cliente->movimientos->isEmpty() ? [
             //     'radicado' => $this->cliente->movimientos->radicado,
@@ -34,7 +38,9 @@ class ProvidersUserResource extends JsonResource
             //     'cliente_id' => $this->cliente->movimientos->cliente_id,
             // ] : 'No movements associated yet',
             'ftd_movements' => $this->cliente ? $this->cliente->movimientos : 'No movements associated yet',
-            "autologin_url" => "https://miurafx.com/iniciar-sesión"
+            "autologin_url" => $this->cliente
+                ? HandleKeysHelper::getClientKeyUrl($this->cliente->id)
+                : 'no existe un cliente asociado a este usuario',
             // - deposit date (also filter from/to)
         ];
     }
