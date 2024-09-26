@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Asignacion;
+use App\Models\Cliente;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,10 +16,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Master
-        $masterUser = User::create([
-            'email' => 'master@email.com',
-            'password' => Hash::make('password'),
+        // Master user
+        $user = User::create([
+            'email' => 'datacenter@miurafx.com',
+            'password' => Hash::make('..p4ssword$'),
             'nombre_completo' => 'Habid Sarif',
             'dirección' => '123 Main St',
             'celular' => '1234567890',
@@ -28,61 +30,29 @@ class UserSeeder extends Seeder
             'documento' => '123456789',
             'método_pago' => 'Tarjeta de Crédito',
             'pais' => 'Colombia',
+            'campanna' => 'frspot',
+            'afiliador' => 'maik',
+            'offerName' => 'marketing_aliases',
+            'offerWebsite' => 'website.com',
+            'comment' => 'this is a comment from a marketing website',
         ]);
 
-        $masterUser->assignRole('master');
+        $user->assignRole('master');
 
-        // Monitor
-        $monitorUser = User::create([
-            'email' => 'monitor@email.com',
-            'password' => Hash::make('password'),
-            'nombre_completo' => 'Habid Sarif',
-            'dirección' => '123 Main St',
-            'celular' => '1234567890',
-            'fecha_nacimiento' => '1980-01-01',
-            'etiqueta' => 'Contactado',
-            'ciudad' => 'Ciudad Ejemplo',
-            'tipo_documento' => 'CC', // por ejemplo, CC para cédula de ciudadanía
-            'documento' => '123456789',
-            'método_pago' => 'Tarjeta de Crédito',
-            'pais' => 'Colombia',
-        ]);
-        $monitorUser->assignRole('monitor');
-
-        // Accesor
-        $accesorUser = User::create([
-            'email' => 'accesor@email.com',
-            'password' => Hash::make('password'),
-            'nombre_completo' => 'Habid Sarif',
-            'dirección' => '123 Main St',
-            'celular' => '1234567890',
-            'fecha_nacimiento' => '1980-01-01',
-            'etiqueta' => 'Contactado',
-            'ciudad' => 'Ciudad Ejemplo',
-            'tipo_documento' => 'CC', // por ejemplo, CC para cédula de ciudadanía
-            'documento' => '123456789',
-            'método_pago' => 'Tarjeta de Crédito',
-            'pais' => 'Colombia',
+        // Master cliente
+        $selfCliente = Cliente::create([
+            'estado' => 'nuevo',
+            'fase' => 'prospecto nuevo',
+            'origen' => 'petróleo',
+            'saldo' => 0.00,
+            'user_id' => $user->id,
         ]);
 
-        $accesorUser->assignRole('accesor');
-
-        // Cliente
-        $clienteUser = User::create([
-            'email' => 'cliente@email.com',
-            'password' => Hash::make('password'),
-            'nombre_completo' => 'Habid Sarif',
-            'dirección' => '123 Main St',
-            'celular' => '1234567890',
-            'fecha_nacimiento' => '1980-01-01',
-            'etiqueta' => 'Contactado',
-            'ciudad' => 'Ciudad Ejemplo',
-            'tipo_documento' => 'CC', // por ejemplo, CC para cédula de ciudadanía
-            'documento' => '123456789',
-            'método_pago' => 'Tarjeta de Crédito',
-            'pais' => 'Colombia',
+        // Asignacion
+        Asignacion::create([
+            "cliente_id" => $selfCliente->id,
+            "user_id" => 1,
+            "asignacion" => "no asignado"
         ]);
-
-        $clienteUser->assignRole('cliente');
     }
 }

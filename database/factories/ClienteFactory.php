@@ -22,9 +22,10 @@ class ClienteFactory extends Factory
     public function definition(): array
     {
         return [
-            'estado' => $this->faker->word(),
-            'fase' => $this->faker->word(),
-            'origen' => $this->faker->word(),
+            'estado' => "nuevo",
+            'fase' => "contactado",
+            'origen' => "petróleo",
+            'saldo' => 0.00,
             'user_id' => User::factory(),
         ];
     }

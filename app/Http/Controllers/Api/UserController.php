@@ -30,7 +30,10 @@ class UserController extends Controller
 
     public function providersIndex(): JsonResponse
     {
-        return (new ProvidersUserCollection(User::where('id', '>', 3)->get()))->response();
+        return (new ProvidersUserCollection(
+            User::where('id', '>', 3)->filter()->get())
+            // User::filter()->get()
+        )->response();
     }
 
     /**
