@@ -19,6 +19,8 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor|cliente'])->grou
 
     Route::get('movimientos/clienteId/{clienteId}', [MovimientoController::class, 'showUserMovements']);
 
+    Route::get('movimientos/clienteId/{clienteId}', [MovimientoController::class, 'showUserMovements']);
+
     // Users -> index, show
     Route::apiResource('users', UserController::class)->only([
         'show'

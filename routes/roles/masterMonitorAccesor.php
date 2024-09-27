@@ -35,6 +35,9 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor'])->group(functi
         'store'
     ]);
 
+    // Obtener información del ULTIMO SEGUIMIENTO EN BASE A ID CLIENTE
+    Route::get('seguimientos/buscar/ultimo/clienteId/{clienteId}', [SeguimientoController::class, 'showByClientId']);
+
     Route::get('seguimientos/buscar/cliente/id/{id}', [SeguimientoController::class, 'filterByClienteId']);
 
     Route::apiResource('asignaciones', AsignacionesController::class)->only([
