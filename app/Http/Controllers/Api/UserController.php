@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
@@ -30,8 +32,23 @@ class UserController extends Controller
 
     public function providersIndex(): JsonResponse
     {
+        // $usersBasicFiltering = QueryBuilder::for(User::class)
+        //     ->allowedFilters(["pais", "created_at"])
+        //     ->where('id', '>', 3)
+        //     ->get();
+
+        $usersAdvancedFiltering = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::scope('starts_between'),
+            ])
+            ->where('id', '>', 0)
+            ->get();
+
         return (new ProvidersUserCollection(
-            User::where('id', '>', 3)->filter()->get())
+            // User::where('id', '>', 3)->filter()->get()
+            // $usersBasicFiltering
+            $usersAdvancedFiltering
+        )
             // User::filter()->get()
         )->response();
     }

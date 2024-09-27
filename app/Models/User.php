@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Abbasudo\Purity\Traits\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,13 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, Filterable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    // Filter scopes
+    public function scopeStartsBetween(Builder $query, $start, $end)
+    {
+        return $query->whereBetween('created_at', [$start, $end]);
+    }
 
     /**
      * The attributes that are mass assignable.
