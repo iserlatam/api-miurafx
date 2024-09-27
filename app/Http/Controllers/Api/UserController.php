@@ -39,6 +39,8 @@ class UserController extends Controller
 
         $usersAdvancedFiltering = QueryBuilder::for(User::class)
             ->allowedFilters([
+                'cliente.estado',
+                'pais',
                 AllowedFilter::scope('starts_between'),
             ])
             ->where('id', '>', 0)

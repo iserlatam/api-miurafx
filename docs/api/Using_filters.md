@@ -1,46 +1,38 @@
-### Documentation: Using Filters with Laravel Purity in API Requests
+### Documentation for Using Filters with Spatie's `laravel-query-builder`
 
-**Purpose**: This guide explains how to use filters when interacting with the API, particularly focusing on how to filter records between specific dates. Check the official package documentation to finding out more about the filters here [Laravel Purity](https://abbasudo.github.io/laravel-purity/js-examples/available-methods.html)
+The API now supports filters using the Spatie package `laravel-query-builder`. This allows users to filter data using various query parameters directly in the URL. One of the most commonly used filters is filtering between dates using the `starts_between` filter.
 
-#### 1. **Base URL for Filtering**
+#### Example Filter: Filtering Between Dates
 
-To filter data using Laravel Purity, users can include filter parameters directly in the URL. The base URL structure for applying filters looks like this:
-
-```
-https://miurafx.com/server/api/providers/users
-```
-
-#### 2. **Applying Date Filters**
-
-One of the most commonly used filters is the date filter, where you may want to fetch records created within a specific date range.
-
-**Important Note:** The system interprets date filters with the following logic:
-- **The operator used is `>` and `<`**, which means the filter selects records **starting the day after** the provided start date and ending **one day before** the provided end date.
-
-**Example URL**:
+To filter user data between two dates, you can use the following URL format:
 
 ```
-https://miurafx.com/server/api/providers/users?filters[created_at][$between][0]=2024-09-24&filters[created_at][$between][1]=2024-09-26
+https://miurafx.com/server/api/providers/users?filter[starts_between]=2024-09-23,2024-09-25
 ```
 
-#### 3. **Explanation of Query Parameters**
+#### How it Works:
 
-- **`filters[created_at]`**: Specifies that you are filtering by the `created_at` field (i.e., when the record was created).
-- **`[$between]`**: The `$between` operator is used to select records that fall between two dates.
-- **`[0]` and `[1]`**: These are the starting and ending dates, respectively.
+- **Parameter: `filter[starts_between]`**: This is the key used to filter records between two specific dates.
+- **Value: `2024-09-23,2024-09-25`**: You provide two dates, separated by a comma, indicating the range. The first date marks the start, and the second date marks the end of the filter range.
 
-In the example above:
-- **`filters[created_at][$between][0]=2024-09-24`**: This sets the starting date. The system will include records **from 2024-09-25** onwards.
-- **`filters[created_at][$between][1]=2024-09-26`**: This sets the ending date. The system will include records **until 2024-09-25** (excluding 2024-09-26).
+#### Important Notes:
 
-#### 4. **General Notes**
+1. **Date Range**: The query filters records that start between the two dates you provide. The operator used for comparison ensures that records starting **from** `2024-09-23` and up **to** `2024-09-25` (inclusive) will be returned.
+2. **Error Handling**: If no results are found within the specified range, the system will return an empty collection, or the default pagination may kick in depending on the setup.
 
-- The format for dates should follow the standard `YYYY-MM-DD` format.
-- You can apply multiple filters by chaining them with `&` in the URL.
-- Make sure the date range you provide is correct to avoid unexpected results due to the nature of the `<` and `>` operators.
+### Query Format
 
-#### 5. **Other Filters**
+- Base URL: `https://miurafx.com/server/api/providers/users`
+- Filter Parameter: `filter[starts_between]=YYYY-MM-DD,YYYY-MM-DD`
 
-In addition to filtering by date, you can apply filters on other fields (e.g., `email`, `nombre_completo`, etc.) using similar URL parameters. Just replace `created_at` with the relevant field name.
+By using this structure, you can easily apply date range filters and retrieve the data between specified dates.
 
-By following these guidelines, users can effectively filter data returned by the API using Laravel Purity.
+### Aditional date scopes
+
+- Starts before: `filter[starts_before]=YYYY-MM-DD`
+- Starts after: `filter[starts_after]=YYYY-MM-DD`
+- Pais (country): `filter[pais]=country`
+- Estado (sale status): `filter[cliente.estado]=saleStatus`
+
+Thanks for reading
+
