@@ -22,6 +22,16 @@ class User extends Model
         return $query->whereBetween('created_at', [$start, $end]);
     }
 
+    public function scopeStartsBefore(Builder $query, $date): Builder
+    {
+        return $query->where('created_at', '<=', $date);
+    }
+
+    public function scopeStartsAfter(Builder $query, $date): Builder
+    {
+        return $query->where('created_at', '>=', $date);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

@@ -42,8 +42,10 @@ class UserController extends Controller
                 'cliente.estado',
                 'pais',
                 AllowedFilter::scope('starts_between'),
+                AllowedFilter::scope('starts_before'),
+                AllowedFilter::scope('starts_after'),
             ])
-            ->where('id', '>', 0)
+            ->where('id', '>', 3)
             ->get();
 
         return (new ProvidersUserCollection(
