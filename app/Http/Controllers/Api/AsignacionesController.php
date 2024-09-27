@@ -22,6 +22,14 @@ class AsignacionesController extends Controller
         return new AsignacionCollection($asignaciones);
     }
 
+    public function indexRelatedClientes(Request $request, $userId): AsignacionCollection
+    {
+        $asignaciones = Asignacion::where('user_id', $userId)
+            ->get();
+
+        return new AsignacionCollection($asignaciones);
+    }
+
     public function show($id): AsignacionResource
     {
         $asignacion = Asignacion::findOrFail($id);

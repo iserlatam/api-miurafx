@@ -40,7 +40,8 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor'])->group(functi
     Route::apiResource('asignaciones', AsignacionesController::class)->only([
         'index',
         'store',
-        'show',
-        'destroy'
+        'show'
     ]);
+
+    Route::get('asignaciones/mis-asignaciones/id/{userId}', [AsignacionesController::class, 'indexRelatedClientes']);
 });
