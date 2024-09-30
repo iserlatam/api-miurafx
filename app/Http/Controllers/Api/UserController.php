@@ -65,6 +65,70 @@ class UserController extends Controller
         return (new UserResource($user))->response();
     }
 
+    public function store(UserRequest $request)
+    {
+        // Verificar si el correo ya existe en la base de datos
+        $existingUser = User::where('email', $request->email)->first();
+
+        if ($existingUser) {
+            // Si el usuario ya existe, puedes manejar el error de la forma que desees
+            return response()->json([
+                'message' => 'This email has been already taken',
+            ], 400); // Error 400: Bad Request
+        }
+
+        $newUser = [
+            "nombre_completo" => $request->nombre_completo,
+            "celular" => $request->celular,
+            "fecha_nacimiento" => $request->fecha_nacimiento,
+            "pais" => $request->pais,
+            "dirección" => $request->direccion,
+            "email" => $request->email,
+            "documento" => $request->documento,
+            "tipo_documento" => $request->tipo_documento,
+            "etiqueta" => $request->etiqueta,
+            "afiliador" => $request->afiliador,
+            "password" => Hash::make("Aa123456"),
+        ];
+
+        // Creación del usuario
+        $user = User::create($newUser);
+
+        // Asignar rol al usuario
+        $user->assignRole('cliente');
+
+        // Asignar nuevo cliente
+        $cliente = Cliente::create([
+            'estado' => 'nuevo',
+            'fase' => 'prospecto nuevo',
+            'origen' => 'petróleo',
+            'saldo' => 0.00,
+            'user_id' => $user->id,
+        ]);
+
+        $selfAccesor = Asignacion::findOrFail(1);
+
+        // Asignacion de asesor self
+        Asignacion::create([
+            "cliente_id" => $cliente->id,
+            "user_id" => $selfAccesor->id,
+            "asignacion" => "no asignado"
+        ]);
+
+        // Response
+        return response()->json([
+            'message' => 'Usuario creado éxitosamente',
+            'CustomerID' => $user->id,
+            'status' => 201,
+            "autologin_url" => HandleKeysHelper::getClientKeyUrl($cliente->id),
+            "user_credentials" => [
+                "email" => $user->email,
+                "password" => "Aa123456",
+                "login_url" => "http://localhost:8000/iniciar-sesion"
+            ],
+        ], 201);
+    }
+
     public function providersStore(UserRequest $request)
     {
 
@@ -88,6 +152,7 @@ class UserController extends Controller
             'offerName' => $request->offerName,
             'offerWebsite' => $request->offerWebsite,
             'comment' => $request->comment,
+            'afiliador' => $request->afiliador,
             // "password" => Hash::make($request->password),
             "password" => Hash::make("Aa123456"),
         ];

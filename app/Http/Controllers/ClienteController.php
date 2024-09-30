@@ -84,6 +84,24 @@ class ClienteController extends Controller
         ], 200);
     }
 
+    public function getRetiros($id)
+    {
+        // Encontrar el cliente por su ID
+        $cliente = Cliente::where('id', $id)
+            ->with(['movimientos' => function ($query) {
+                // Filtrar solo los movimientos de tipo 'retiro'
+                $query->where('tipo_solicitud', 'retiro');
+            }])
+            ->get();
+
+        $totalRetiros = $cliente->first()->movimientos->sum('cantidad');
+
+        // Retornar una respuesta de éxito
+        return response()->json([
+            "total_retiros" => $totalRetiros
+        ], 200);
+    }
+
     public function getClienteUserId($id)
     {
         // Encontrar el cliente por su ID
