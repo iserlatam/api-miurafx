@@ -12,11 +12,14 @@ use App\Http\Resources\UserResource;
 use App\Models\Asignacion;
 use App\Models\Cliente;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -216,6 +219,35 @@ class UserController extends Controller
         ]));
 
         return new UserResource($user);
+    }
+
+
+
+    public function resetPassword(Request $request)
+    {
+        // Buscar el usuario por email
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+
+            $user->update(
+                [
+                    'password' => Hash::make($request->password)
+                ]
+            );
+
+            $user->refresh();
+
+            // Respuesta de éxito
+            return response()->json([
+                'message' => 'Contraseña reseteada éxitosamente',
+            ], 200);
+        }
+
+        // Si no se encuentra el usuario
+        return response()->json([
+            'message' => 'Usuario no encontrado',
+        ], 404);
     }
 
     /**

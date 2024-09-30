@@ -6,6 +6,7 @@ use App\Http\Controllers\MovimientoController;
 use App\Mail\ResetPasswordMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,12 +39,14 @@ Route::get('/clientes/generar-key/{userId}', [ClienteController::class, 'generar
 Route::post('movimientos/key/{key}', [MovimientoController::class, 'storeWithKey']);
 
 // Reset password link
-Route::post('clientes/send-password-reset-email', function (Request $request) {
+Route::post('usuarios/forgot-password-email', function (Request $request) {
     $email = $request->email;
 
     Mail::to($email)->send(new ResetPasswordMail());
 
     return response()->json([
-        "message" => "correo enviado exitosamente a $request->email",
+        "message" => "Correo enviado exitosamente a $request->email",
     ], 200);
 });
+
+Route::post('usuarios/resetear-contrasena', [UserController::class, 'resetPassword']);
