@@ -25,7 +25,6 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
     Route::post('/providers/users/create', [UserController::class, 'providersStore']);
 
     Route::apiResource('clientes', ClienteController::class)->only([
-        'update',
         'destroy'
     ]);
 

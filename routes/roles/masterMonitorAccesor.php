@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor'])->group(functi
     // Clientes -> index, show
     Route::apiResource('clientes', ClienteController::class)->only([
         'index',
+        'update'
     ]);
 
     // Monitor -> index, show

@@ -5,6 +5,9 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\MovimientoController;
+use App\Mail\ResetPasswordMail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'role:master|monitor|accesor|cliente'])->group(function () {
@@ -20,6 +23,7 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor|cliente'])->grou
     ]);
 
     Route::get('movimientos/clienteId/{clienteId}', [MovimientoController::class, 'showUserMovements']);
+
     // Users -> index, show
     Route::apiResource('users', UserController::class)->only([
         'show'
