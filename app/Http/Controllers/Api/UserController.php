@@ -41,6 +41,7 @@ class UserController extends Controller
             ->allowedFilters([
                 'cliente.estado',
                 'pais',
+                'afiliador',
                 AllowedFilter::scope('starts_between'),
                 AllowedFilter::scope('starts_before'),
                 AllowedFilter::scope('starts_after'),
