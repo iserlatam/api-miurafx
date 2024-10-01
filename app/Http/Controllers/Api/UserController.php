@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        return (new UserCollection(User::all()))->response();
+        return (new UserCollection(User::orderByDesc('id')->get()))->response();
     }
 
     public function providersIndex(): JsonResponse
