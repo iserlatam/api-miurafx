@@ -38,17 +38,16 @@ class ClienteController extends Controller
         $oldSaldo = $cliente->saldo;
         $incomingSaldo =  $request->saldo;
 
-
         switch ($changeType) {
             case "retiro":
-                $finalSaldo = $oldSaldo - $incomingSaldo;
+                if ($incomingSaldo <= $oldSaldo) {
+                    $finalSaldo = $oldSaldo - $incomingSaldo;
+                } else if ($incomingSaldo >= $oldSaldo || $oldSaldo == 0) {
+                    return response()->json(['message' => 'El cliente no cuenta con fondos suficientes']);
+                }
                 break;
 
             case "deposito":
-                // Movimiento validation
-                if ($incomingSaldo < 250) {
-                    return response()->json(['message' => 'La cantidad de deposito mínima es de 250']);
-                }
                 $finalSaldo = $oldSaldo + $incomingSaldo;
                 break;
 

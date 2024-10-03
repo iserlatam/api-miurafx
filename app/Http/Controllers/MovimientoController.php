@@ -6,6 +6,7 @@ use App\Http\Requests\MovimientoStoreRequest;
 use App\Http\Requests\MovimientoUpdateRequest;
 use App\Http\Resources\MovimientoCollection;
 use App\Http\Resources\MovimientoResource;
+use App\Models\Cliente;
 use App\Models\Movimiento;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,6 +30,7 @@ class MovimientoController extends Controller
             'movimiento' => $movimiento,
         ], Response::HTTP_OK);
     }
+
     public function index(Request $request): MovimientoCollection
     {
         $movimientos = Movimiento::orderBy('id', 'desc')->get();
@@ -39,24 +41,44 @@ class MovimientoController extends Controller
     public function store(Request $request)
     {
 
-        $movimiento = new Movimiento();
+        $cliente = Cliente::findOrFail($request->cliente_id);
+        $changeType = $request->tipo_solicitud;
 
-        $movimiento->radicado = $request->radicado;
-        $movimiento->tipo_solicitud = $request->tipo_solicitud;
-        $movimiento->estado_solicitud = $request->estado_solicitud;
-        $movimiento->metodo_pago = $request->metodo_pago;
-        $movimiento->divisa = $request->divisa;
-        $movimiento->cantidad = $request->cantidad;
-        $movimiento->razon_rechazo = $request->razon_rechazo;
-        $movimiento->documento = $request->documento;
-        $movimiento->cliente_id = $request->cliente_id;
+        $clienteSaldo = $cliente->saldo;
+        $incomingSaldo =  $request->cantidad;
 
-        // Establecer la fecha de creación con la fecha actual
-        $movimiento->fecha_solicitud = now();
+        $movimientoBody = [
+            'radicado' => $request->radicado,
+            'tipo_solicitud' => $request->tipo_solicitud,
+            'estado_solicitud' => $request->estado_solicitud,
+            'metodo_pago' => $request->metodo_pago,
+            'fecha_solicitud' => now(),
+            'cod_banco_red' => $request->cod_banco_red,
+            'no_cuenta_billetera' => $request->no_cuenta_billetera,
+            'divisa' => $request->divisa,
+            'cantidad' => $request->cantidad,
+            'razon_rechazo' => $request->razon_rechazo,
+            'documento' => $request->documento,
+            'cliente_id' => $request->cliente_id,
+        ];
 
-        $movimiento->save();
-
-        return new MovimientoResource($movimiento);
+        switch ($changeType) {
+            case "retiro":
+                if ($incomingSaldo <= $clienteSaldo) {
+                    $movimiento = Movimiento::create($movimientoBody);
+                    return response()->json(['message' => "¡Solicitud de retiro éxitosa! # Radicado $request->radicado"]);
+                } else if ($incomingSaldo >= $clienteSaldo || $clienteSaldo == 0) {
+                    return response()->json(['message' => 'No cuentas con fondos suficientes. Recarga tu cuenta']);
+                }
+                break;
+            case "deposito":
+                $movimiento = Movimiento::create($movimientoBody);
+                return response()->json(['message' => "¡Solicitud de retiro éxitosa! # Radicado $request->radicado"]);
+            default:
+                return response()->json([
+                    "message" => "tipo de solicitud inválida",
+                ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     public function storeWithKey(Request $request, $key)

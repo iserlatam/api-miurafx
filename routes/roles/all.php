@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'role:master|monitor|accesor|cliente'])->grou
 
     // Users -> index, show
     Route::apiResource('users', UserController::class)->only([
-        'show'
+        'show',
+        'update'
     ]);
 });

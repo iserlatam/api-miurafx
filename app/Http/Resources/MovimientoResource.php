@@ -21,6 +21,8 @@ class MovimientoResource extends JsonResource
             'fecha_solicitud' =>  date_format($this->created_at, 'Y-m-d'),
             'divisa' => $this->divisa,
             'cantidad' => $this->cantidad,
+            'cod_banco_red' => $this->cod_banco_red,
+            'no_cuenta_billetera' => $this->no_cuenta_billetera,
             'razon_rechazo' => $this->razon_rechazo,
             'documento' => $this->documento,
             'cliente_id' => $this->cliente_id,

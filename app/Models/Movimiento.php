@@ -22,6 +22,8 @@ class Movimiento extends Model
         'estado_solicitud',
         'metodo_pago',
         'fecha_solicitud',
+        'cod_banco_red',
+        'no_cuenta_billetera',
         'divisa',
         'cantidad',
         'razon_rechazo',

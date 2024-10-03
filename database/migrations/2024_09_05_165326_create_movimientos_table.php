@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('metodo_pago');
             $table->date('fecha_solicitud');
             $table->string('divisa');
+            $table->string('cod_banco_red');
+            $table->string('no_cuenta_billetera');
             $table->string('cantidad');
             $table->string('razon_rechazo');
             $table->string('documento');

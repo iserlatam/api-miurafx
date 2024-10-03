@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
     // Users, Clientes, Movimientos -> update, delete
     Route::apiResource('users', UserController::class)->only([
-        'update',
         'destroy'
     ]);
 
