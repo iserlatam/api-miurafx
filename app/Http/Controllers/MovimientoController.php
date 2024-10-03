@@ -19,6 +19,16 @@ class MovimientoController extends Controller
         // Encontrar el movimiento por su ID
         $movimiento = Movimiento::findOrFail($id);
 
+        $cliente = Cliente::findOrFail(6);
+
+        if ($request->estado == 'aprobado') {
+            if ( $cliente->sub_estado != 'ftd') {
+                $cliente->update([
+                    "sub_estado" => "ftd",
+                ]);
+            }
+        }
+
         // Actualizar solo la columna 'estado'
         $movimiento->update([
             'estado_solicitud' => $request->estado,
@@ -42,6 +52,7 @@ class MovimientoController extends Controller
     {
 
         $cliente = Cliente::findOrFail($request->cliente_id);
+
         $changeType = $request->tipo_solicitud;
 
         $clienteSaldo = $cliente->saldo;

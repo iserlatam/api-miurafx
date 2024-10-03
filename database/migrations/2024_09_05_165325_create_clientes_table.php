@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('estado');
-            $table->string('fase');
-            $table->string('origen');
+            $table->string('estado')->nullable();
+            $table->string('sub_estado')->nullable();
+            $table->string('fase')->nullable();
+            $table->string('origen')->nullable();
             $table->double('saldo')->default(0);
             $table->foreignId('user_id');
             $table->timestamps();

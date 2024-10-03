@@ -170,6 +170,7 @@ class UserController extends Controller
         // Asignar nuevo cliente
         $cliente = Cliente::create([
             'estado' => 'nuevo',
+            'sub_estado' => 'nuevo',
             'fase' => 'prospecto nuevo',
             'origen' => 'petróleo',
             'saldo' => 0.00,

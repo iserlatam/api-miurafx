@@ -18,6 +18,7 @@ class Cliente extends Model
      */
     protected $fillable = [
         'estado',
+        'sub_estado',
         'fase',
         'origen',
         'saldo',
