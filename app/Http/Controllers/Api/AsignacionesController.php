@@ -78,7 +78,8 @@ class AsignacionesController extends Controller
         $asignacion = Asignacion::findOrFail($id);
 
         $asignacion->update([
-            "user_id" => $request->accesor_id
+            "user_id" => $request->accesor_id,
+            "asignacion" => "asignado"
         ]);
 
         // Retornar una respuesta de éxito
