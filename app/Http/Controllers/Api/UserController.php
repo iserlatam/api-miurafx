@@ -262,4 +262,28 @@ class UserController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+    public function deleteUserByClienteId($id)
+    {
+        // Encuentra al usuario
+        $user = User::findOrFail($id);
+
+        // Encuentra el cliente asociado al usuario
+        $cliente = $user->cliente;
+
+        if ($cliente) {
+            // Elimina todas las asignaciones asociadas al cliente
+            $cliente->asignaciones()->delete();
+
+            // Elimina al cliente
+            $cliente->delete();
+        }
+
+        // Finalmente, elimina al usuario
+        $user->delete();
+
+        return response()->json([
+            "message" => "Usuario eliminado satisfactoriamente de la base de datos",
+        ], Response::HTTP_NO_CONTENT);
+    }
 }

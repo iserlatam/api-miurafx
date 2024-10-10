@@ -15,6 +15,8 @@ Route::middleware(['auth:sanctum', 'role:master'])->group(function () {
         'destroy'
     ]);
 
+    Route::delete('/users/delete/clienteId/{id}', [UserController::class, 'deleteUserByClienteId']);
+
     // Upload users
     Route::post('/users/import', [UserExcelController::class, 'import'])->name('import');
 
