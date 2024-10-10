@@ -19,7 +19,7 @@ class MovimientoController extends Controller
         // Encontrar el movimiento por su ID
         $movimiento = Movimiento::findOrFail($id);
 
-        $cliente = Cliente::findOrFail(6);
+        $cliente = Cliente::findOrFail($movimiento->cliente_id);
 
         if ($request->estado == 'aprobado') {
             if ( $cliente->sub_estado != 'ftd') {
