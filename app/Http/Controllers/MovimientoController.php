@@ -106,9 +106,45 @@ class MovimientoController extends Controller
         // Extraer el userId de la key decodificada
         [$userId, $secretPhrase] = explode(',', $decodedKey);
 
-        $movimiento = Movimiento::create($request->all());
+        $cliente = Cliente::findOrFail($request->cliente_id);
 
-        return new MovimientoResource($movimiento);
+        $changeType = $request->tipo_solicitud;
+
+        $clienteSaldo = $cliente->saldo;
+        $incomingSaldo =  $request->cantidad;
+
+        $movimientoBody = [
+            'radicado' => $request->radicado,
+            'tipo_solicitud' => $request->tipo_solicitud,
+            'estado_solicitud' => $request->estado_solicitud,
+            'metodo_pago' => $request->metodo_pago,
+            'fecha_solicitud' => now(),
+            'cod_banco_red' => $request->cod_banco_red,
+            'no_cuenta_billetera' => $request->no_cuenta_billetera,
+            'divisa' => $request->divisa,
+            'cantidad' => $request->cantidad,
+            'razon_rechazo' => $request->razon_rechazo,
+            'documento' => $request->documento,
+            'cliente_id' => $request->cliente_id,
+        ];
+
+        switch ($changeType) {
+            case "retiro":
+                if ($incomingSaldo <= $clienteSaldo) {
+                    $movimiento = Movimiento::create($movimientoBody);
+                    return response()->json(['message' => "¡Solicitud de retiro éxitosa! # Radicado $request->radicado"]);
+                } else if ($incomingSaldo >= $clienteSaldo || $clienteSaldo == 0) {
+                    return response()->json(['message' => 'No cuentas con fondos suficientes. Recarga tu cuenta']);
+                }
+                break;
+            case "deposito":
+                $movimiento = Movimiento::create($movimientoBody);
+                return response()->json(['message' => "¡Solicitud de retiro éxitosa! # Radicado $request->radicado"]);
+            default:
+                return response()->json([
+                    "message" => "tipo de solicitud inválida",
+                ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     public function show(Request $request, Movimiento $movimiento): MovimientoResource
