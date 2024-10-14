@@ -142,7 +142,7 @@ class ClienteController extends Controller
         return new ClienteResource($cliente);
     }
 
-    public function update(Request $request, $id): ClienteResource
+    public function update(Request $request, $id)
     {
         $cliente = Cliente::findOrFail($id);
 
