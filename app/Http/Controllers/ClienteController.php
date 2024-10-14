@@ -154,7 +154,7 @@ class ClienteController extends Controller
 
         return response()->json([
             "message" => "Cliente actualizado con éxito",
-        ], Response::HTTP_BAD_REQUEST);
+        ], Response::HTTP_OK);
     }
 
     public function destroy(Request $request, Cliente $cliente): Response
