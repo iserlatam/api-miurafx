@@ -146,6 +146,8 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'This email has been already taken',
             ], 400); // Error 400: Bad Request
+        } else {
+
         }
 
         $newUser = [
@@ -177,12 +179,10 @@ class UserController extends Controller
             'user_id' => $user->id,
         ]);
 
-        $selfAccesor = Asignacion::findOrFail(1);
-
         // Asignacion de asesor self
         Asignacion::create([
             "cliente_id" => $cliente->id,
-            "user_id" => $selfAccesor->id,
+            "user_id" => 1,
             "asignacion" => "no asignado"
         ]);
 
