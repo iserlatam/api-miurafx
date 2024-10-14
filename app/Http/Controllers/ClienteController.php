@@ -152,7 +152,9 @@ class ClienteController extends Controller
             "origen" => $request->origen
         ]);
 
-        return new ClienteResource($cliente);
+        return response()->json([
+            "message" => "Cliente actualizado con éxito",
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     public function destroy(Request $request, Cliente $cliente): Response
