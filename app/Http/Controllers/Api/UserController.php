@@ -49,7 +49,10 @@ class UserController extends Controller
                 AllowedFilter::scope('starts_before'),
                 AllowedFilter::scope('starts_after'),
             ])
-            ->where('id', '>', 3)
+            ->where([
+                ['id', '!=', '20'],
+                ['id', '>', '3']
+            ])
             ->get();
 
         return (new ProvidersUserCollection(
@@ -146,8 +149,6 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'This email has been already taken',
             ], 400); // Error 400: Bad Request
-        } else {
-
         }
 
         $newUser = [
