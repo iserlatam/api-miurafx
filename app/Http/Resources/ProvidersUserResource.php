@@ -24,6 +24,7 @@ class ProvidersUserResource extends JsonResource
             'offerName' => $this->offerName,
             'offerWebsite' => $this->offerWebsite,
             'comment' => $this->comment,
+            'afiliador' => $this->afiliador,
             'saleStatus' => $this->cliente ? $this->cliente->estado : 'No associated accessor for this user',
             // 'ftd_movements' => $this->cliente && $this->cliente->movimientos && !$this->cliente->movimientos->isEmpty() ? [
             //     'radicado' => $this->cliente->movimientos->radicado,
