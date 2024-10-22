@@ -172,8 +172,8 @@ class UserController extends Controller
 
         // Asignar nuevo cliente
         $cliente = Cliente::create([
-            'estado' => $request->saleStatus,
-            'sub_estado' => $request->saleStatus,
+            'estado' => "pending",
+            'sub_estado' => "pending",
             'fase' => 'prospecto nuevo',
             'origen' => 'petróleo',
             'saldo' => 0.00,
