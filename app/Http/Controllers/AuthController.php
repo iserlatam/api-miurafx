@@ -77,17 +77,15 @@ class AuthController extends Controller
         $cliente = Cliente::create([
             'estado' => 'nuevo',
             'fase' => 'prospecto nuevo',
-            'origen' => 'frspot',
+            'origen' => 'BITCOIN',
             'saldo' => 0.00,
             'user_id' => $user->id,
         ]);
 
-        $selfAccesor = Asignacion::findOrFail(1);
-
         // Asignacion de asesor self
         Asignacion::create([
             "cliente_id" => $cliente->id,
-            "user_id" => $selfAccesor->id,
+            "user_id" => 1, // Asesor self@miurafx.com
             "asignacion" => "no asignado"
         ]);
 
